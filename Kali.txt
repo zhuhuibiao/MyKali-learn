@@ -1,0 +1,811 @@
+
+关于密码的破解
+在Linux上 /etc/passwd   /etc/shadow
+
+使用命令 
+unshadow
+第一步
+unshadow   /etc/passwd   /etc/shadow  >test_passwd
+test_passwd 密码文件
+第二步
+使用john破解密码
+命令  john test_passwd
+
+<若使用自己的密码字典>
+
+john --wordlist=字典路径 test_passwd
+第三步
+查看已经破击的密码
+john --show test_passwd
+
+
+关于rar和zip的压缩包的密码破解
+使用内置rar2john  和 zip2john
+
+测试用例
+zip -p test.zip 1.txt 2.txt   回车输入密码 便可以生成一个带密码的压缩包
+第一步生成hash文件
+rar2john  test.zip > xxx
+第二步
+john xxx
+
+端口扫描
+nmap  -sV ip   扫描端口
+第一步
+扫描端口为3389段的137 -255的机器开放3389的
+nmap -p 3389 192.168.233.137-255
+第二步
+使用hydra 这个工具 破解Administrator 账户 生成一个密码文件
+rdp 是什么需要百度
+
+search  SSQLlogin 很多模块
+use 到模块
+show options   查看需要设置哪些选项
+
+
+DDOS 常用工具
+Kali Linux进行DDOS攻击
+DDOS（分布式拒绝服务攻击）工具
+DDOS-Attack
+git clone https://github.com/HaMrX/DDOs-Attack
+cd DDOs-Attack/ 给予执行权限
+使用python执行
+python ddos-attack.py
+命令：IP Target:需要攻击的域名
+命令：Port：端口号
+
+dirsearch 工具的使用 githab源码python3 编写工具
+暴力扫描页面结构，包括网页中的目录和文件    
+python3 dirsearch.py -u testphp.vulnweb.com -e *
+多线程、可保持连接、支持多种后缀（-e|–extensions asp,php）、生成报告（纯文本，JSON）、启发式检测无效的网页、递归的暴力扫描、支持HTTP代理、用户代理随机化、批量处理、请求延迟、扫描器与字典、字典必须是文本文件，除了使用特殊的％EXT％之外，其余每行都会被处理
+网站敏感信息包括如下： 
+后台目录：弱口令，万能密码，爆破
+安装包：获取数据库信息，甚至是网站源码
+上传目录：截断、上传图片马等
+mysql管理接口：弱口令、爆破，万能密码，然后脱裤，甚至是拿到shell
+安装页面 ：可以二次安装进而绕过
+phpinfo：会把你配置的各种信息暴露出来
+编辑器：fck、ke、等
+iis短文件利用：条件比较苛刻  windows、apache等
+提到了网站敏感目录我们就不得不提 robots.txt 文件了
+robots.txt 文件是专门针对搜索引擎机器人robot 编写的一个纯文本文件。我们可以在这个文件中指定网站中不想被robot访问的目录。这样，我们网站的部分或全部内容就可以不被搜索引擎收录了，或者让搜索引擎只收录指定的内容。因此我们可
+-h, --help 查看帮助
+-u URL, --url=URL 设置url
+-L URLLIST, --url-list=URLLIST 设置url列表
+-e EXTENSIONS, --extensions=EXTENSIONS 网站脚本类型
+-w WORDLIST, --wordlist=WORDLIST 设置字典
+-l, --lowercase 小写
+-f, --force-extensions 强制扩展字典里的每个词条
+-s DELAY, --delay=DELAY 设置请求之间的延时
+-r, --recursive Bruteforce recursively 递归地扫描
+
+
+
+
+20210816
+mysql库的备份
+全库备份
+mysqldump -u root -p -h localhost 库名 >bak.sql
+备份表
+mysqldump -u root -h localhost -p 库名 表1,表2,表3 >bak.sql
+备份多库
+mysqldump -u root -h localhost -p 库名 库1,库2,库3 >bak.sql
+备份所有库
+mysqldump -u root -h localhost -p --all-databases >bak.sql
+
+NC 和 Ncat的使用
+nc -nv ip 100
+扫描tcp
+nc -nvz ip 1-65535
+扫描udp
+nc -nvzu ip 1-1024
+nc  ------> ncat的缺点 ncat可以加密
+nc 可以用来远程取证 克隆硬盘 远程控制
+A: nc  -lp port -c bash || cmd
+B: nc ip port 
+
+A: nc -lp port dd of=/dev/sda
+B: dd if=/dev/sda/ nc -nv ip port
+
+ncat -nv ip port 
+ncat -nv bash -allow
+传输目录
+tar -zxvf -/opt | nc -lp port 
+nc -nv ip port | tar -zxvf - /opt
+
+#!/bin/bash
+nohup >/dev/null 2>&1 ./start.sh &
+
+firewall-cmd --list-service --parmanent
+
+查看root正在运行的
+ps -aux | grep root 
+ps -ef | grep root
+
+tcpdump
+抓包工具 tcpdump 默认抓取68个字节
+tcpdump -i eth0 tcp port 22
+-X 十六进制
+-A 具体内容 ASSIC 
+tcpdump -r a.cap  读取抓包工具
+tcpdump -i eth0 -s -o -w <a.cap
+-s 111 size大大小  0表示无穷大 
+-w 保存到哪里
+
+WireShark
+信息收集
+
+域名解析nslookup
+nslookup 
+解析域名
+type=a , mx ,ns,any
+指定类型
+pyr反向解析IP解析成域名  q=ptr
+server ip 可以指定域名解析
+
+8.8.8.8 谷歌的  --->备用DNS  8.8.4.4
+
+114.114.114.114  国内的联通电信  -----> 备用114.114.115.115
+
+阿里的DNS解析
+首选地址223.5.5.5
+备用地址223.6.6.6
+
+中国联通宽带 
+首选地址123.125.81.6 
+备用地址140.207.198.6
+
+
+--------DNS DIG
+dig @8.8.8.8 www.baidu.com
+dig mail.163.com any   查询出cname记录
+dig +noall +answer mail.163.com any | grep awk '(print $5)' 只看结果Answer 只打印第五列
+反向查询
+dig 163.com mx   mx的记录
+dig -x ip
+bind 版本信息 作用
+dig +noall +answer txt VERSION.BIND @baidu.com  
+DNS追踪
+dig +trace www.baidu.com
+
+DNS全区域传输 
+根据域名发现主机名和每个主机名的ip地址
+dig @nsl.example.com example.com axfr
+axfr 表示你把你的所有域名都给我 ----连接到时候抓包
+host -T -l sina.com 8.8.8.8
+-l  === acfr  -T TCP
+
+DNS字典爆破 工具 都有自己的字典 可以是用 find / -name fierce 查看
+fierce -dnsserver 8.8.8.8 -dns sina.com.cn -wordlist a.txt
+dnsdict6 -d4 -t 16 -x sina.com  较快
+dnsenum -f dnsbig.txt -dnsserver 8.8.8.8 sina.com -o sina.xml
+dmsmap sina.com -w dns.txt
+dengdneg
+
+DNS 注册信息
+whois 
+whois 域名  查看域名注册的信息
+whois -h 
+http://www.apnic.net
+
+搜索引擎技术
+SHODAN
+banner http ftp ssh telnet
+http://www.shodan.io/
+http://www.onyphe.io/
+微步
+https://x.threatbook.cn/
+情报社区
+http://testphp.vulnweb.com/
+云溪指纹
+https://www.yunsee.cn/
+信息收集
+whois.bugscanner.com
+
+示例
+country:CN city:biejing port:81 
+常见的过滤filter
+net (192.168.XX.XXX)
+city
+country (CN US)
+port (81 21 22 23)
+os 
+hostname
+server
+
+user:admin pass:password  
+200 OK cisco country:CN JP
+
+示例和方法 
+http://www.shodan.io/explore
+总结自己的搜索经验和方法
+Add-Ons 插件
+google搜索引擎
+site 在哪个网站
+inurl 有哪些url
+intext 正文
+intitle
++字段想要的关键字 -不想要的关键字
+加上""只要完整的引号里面的东西
+查看源文件可以看到 title 等内容
+
+filetype:pdf
+example
+site:wwww.baidu.com inurl:contact 在哪个站点存在哪个关键字
+XXXX filetype:pdf  关于XXX文件类型是pdf文档
+可以搜索国家 XXX关键字 site:fr  在法国网站 
+示例l :
+inurl:"/level/15/exec/-/show/"
+intitle:"netbolz applicance" "ok"
+inurl:/admin/login.php
+inurl:qq.txt
+filetype:xls "username | password"
+inurl:ftp "password" filetype:xls site:baidu.com
+inurl:Service.pwd
+
+https://www.exploit-db.com/
+谷歌语法使用大全
+https://www.exploit-db.com/google-hacking-database
+俄罗斯的世界第四浏览器
+https://yandex.com/
+域名与主机记录
+theharvester -d 域名163.com -l 多少条指令 -b用什么搜索引擎
+MELTAGO工具的使用
+
+
+个人专属的密码字典----密码字典 kail不自带
+CUPP common User Password Profile
+git clone https://github.com/Mebus/cupp.git
+python cup.py -i
+
+
+EXIF图片信息
+exiftool 1.jpg
+MATADATE 源数据
+windows相关软件
+foca
+
+***被动收集信息
+RECON-NG 
+全特性的web侦查框架 python语言开发 
+命令格式 msf一致
+使用方法:
+模块
+数据库
+报告   
+
+example
+
+recon-ng -h
+recon-ng -w 放在一个工作区name
+--no-check 不更新
+recon-ng -w sina  一个工作区
+workspace 工作区
+keys add shodna.io api
+load 加载模块
+gdb debug模式
+query 查询数据库语句标准语法
+record 记录
+reload 重新加载
+search 搜索模块
+set 设置选项用  example 设置变量
+shell 执行系统命令使用的 
+show  options 展示当前框架信息,有多少模块可以设置
+show 可以很多......
+show schema 查看表
+show snapshots 快照 list 查看  take一个快照
+show spool 资源池 spool 
+use 各种模块可以使用
+进入去show options 
+show info	
+run 运行
+
+set souurce 域名
+run  运行模块
+
+search baidu
+use 搜索出来的模块
+直接查看
+show hosts
+query  select * form hosts可以跟sql语句
+可以使用多个不同的浏览器去搜索
+set source XXXX
+run
+检索出主机
+根据主机查询出IP地址
+爆破模块 
+resolve 模块解析域名解析出IP地址
+show options\
+show info 查看用法
+set source query select 列 from hosts where host like %%
+run
+
+search report  生成报告 
+use reporting/html
+show options
+set creator fanghong.yuna  用户 
+set customer sina.com
+set filename root/Desktop/sina.html
+
+****主动收集信息
+都是最新的信息,被动收集是过去的历史信息不直接和目标系统信息系统交互
+主动信息收集
+:直接与目标系统进行交互通信
+:无法避免留下访问痕迹
+:使用受控的第三方电脑进行探测
+1.使用代理
+2.做好被封杀的准备
+3.使用噪声迷惑目标机,淹没真实的探测流量
+扫描:
+发送不同的探测,根据返回的状态判断目标状态
+
+IP PORT SERVER进行扫描
+发现阶段IP层面:
+识别网络活着的主机---->输出IP列表
+OSI 七层模型 理论模型
+物理层 --->表现层ARP协议<速度快,发现本网段的IP,不过路由>--->Network层----->Transport------>Session------>Presentation------>Application
+2层的发现:
+arping  工具
+arping ip -c l 只发一个包
+arping ip -d   发现重复的响应,拥有同一个mac不同的ip这就是arp欺骗
+arping ip -c | grep "bytes from" | cut -d " " -f 5 | cut -d "(" -f 2 |cut -d ")" -f 1
+
+IP地址发现脚本
+#!/bin/bash
+if 
+["$#" -ne 1]; then       #只允许有一个参数
+echo"Usage-/arping.sh [interface]" echoeximple./arping.sh ethen
+echo"Example will perforn an ARp scan of the local subnet to which ethe is assigned" 
+exit
+interfacer=$1
+prefix=$(ifconfig $interface | grep 'inet addr' | cut -d '.' t 2 | cut -d + ' f 1 1 cut -d "._ -f 1-3) for addr ins(seg 1254):do
+arping-c 1 $prefix.$addr | grep "bytes from" | cut -d ""-f 5 | cut-d "(" -f 2 | cut -d ")" -f 1 >>addr.txt 
+done
+
+NMAP 
+namp 1.1.1.1-255 -sn    ---sn参数     ping扫描但不进行端口扫描
+namp -iL ip.txt -sn
+namp -sn 1.1.1.1/24  
+
+netdiscover 
+专用于二曾发现
+无线和交换
+主动和被动
+主动
+netdiscover -i eth0 -r 1921.68.1.1/24
+netdiscover -l ip.list.txt
+被动
+netdiscover -p
+主动arp是容易报警的
+
+
+Scapy-----编程出自己程序 实现网络数据包抓包功能 分段  分析 创建数据包 修改数据包 
+作为python库进行调用
+也可以作为单独的工具使用
+抓包,分析,创建,修改,注入网络流量
+使用
+scapy  
+报错waring下载
+apt-get install python-gunplot
+Scapy----进入自己的程序结构
+ARP()函数大写  函数名称都是大写
+ARP().display()定义
+arp=ARP() 调用函数ARP
+arp.pdst="191.12.1.1"
+Sr1(arp) 发包
+
+渗透目标系统---->对内部进行深入的渗透 目标机器仅有有 netdiscover python 或者 arping
+
+
+*******三层发现技术 工作协议 IP层 ICMP都归为三层 主要发送ICMP包
+优点
+1.可路由 2.速度比较快
+缺点:
+1.速度比二层慢  2.经常被路由过滤掉
+ping 15种定义
+ping 1.1.1.1 -c 2
+ping -R 1.1.1.1 /
+路由追踪
+traceroute 
+
+fping
+fping 1.1.1.1 响应结果又时间大小丢包率
+fping -g 1.1.1.1 1.1.1.200 起始和结束IP
+fping -g 1.1.1.1/24
+Hping
+几乎能发任意的 TCP/IP包
+功能强大但是只能一次一个目标
+hping 1.1.1.1 --icmp -c 2
+for addr in $(seq 1 254);do hping 1.1.1.$addr -icmp -c 1 >>x.txt & done
+
+
+******发现 四层发现
+可路由结果可靠
+不太可能被防火墙过滤
+甚至可以发现所有的端口都被过滤的主机
+缺点 
+全端口扫描慢
+防火墙可能过滤
+TCP
+未经请求的ACK ----RST 
+SYN ---SYN/ACK,RST
+UDP 
+ICMP端口不可达 一去不回
+
+nmap 四层发现扫描 
+nmap 1.1.1.1-254 -PU53 -sn  ---53 为端口  PU UDP 53端口  -sn只做端口的扫描
+nmap 1.1.1.1-254 -PA80 -sn    ACK扫描
+
+
+端口扫描 
+1.端口对应着应用程序
+2.发现开放的端口 
+3.具体的工具面
+4.服务程序的漏洞通过端口攻入
+
+UDP端口扫描--ICMP port-unreachable 端口不可达 容易导致误判
+完整的UDP应用层请求
+准确性高 耗时间巨大 65535个端口
+UDP默认1000个端口
+nmap -sU 1.1.1.1  默认1000个  port-unreachable 端口不可达 
+nmap -sU 1.1.1.1 -p 8080  直接指定端口
+nmap -sU 1.1.1.1 -p-   65535个端口
+nmap -sU 1.1.1.1 -p1-5000  扫描1-5000个端口
+
+
+TCP端口扫描
+1.SYN 2.SYN,SCK 3.ACK
+2三次握手 
+3隐蔽扫描
+不建立连接syn只发送,不发最后的ack,不会有记录在应用层,但会存在网络层
+scapy
+a=sr1(IP(dst="192.168.目标IP")/TCP(flags="S"),timeout=1,verbose=0)
+a.display()
+a=sr1(IP(dst="192.168.目标IP")/TCP(flags="S",dport=8080),timeout=1,verbose=0)
+SYN扫描 sS
+nmap -sS 1.1.1.1 -p1-100 --open   只出现开放的端口
+nmap IP -p1-100    默认方式就是SYN扫描
+nmap IP -p --65535
+nmap IP -p- --open   等于上一个
+hping3的方式
+hping3 1.1.1.1 --scan 80 -S
+hping3 1.1.1.1 --scan 1-100 -S  表示使用syn扫描
+hping3 1.1.1.1 --scan -S
+hping3 -c 10 -S --spoof 1.1.1.1 -p ++1 目标IP  欺骗IP 伪造源地址每次加1
+4僵尸扫描
+极度隐蔽,
+实施条件苛刻
+可伪造源地址
+选择僵尸机
+系统使用递增的IPID
+可以使用nmap进行僵尸扫描
+发现僵尸机: 首先确认一台僵尸机 调用脚本 找出一个僵尸 -p端口 可以选择可靠的
+nmap -p445 1.1.1.1 --script=ipidseq.nse
+扫描主机
+nmap 1.1.1.1 -sI 1.1.1.2(好的僵尸机) -Pn -p 0-100
+
+
+5全连接扫描 非常高的一种方式不是很安全 很容易触发告警系统
+scapy 比较困难
+a=sr1(IP(dst="192.168.目标IP")/TCP(flags="S",dport=22),timeout=1,verbose=0)
+a.display()
+凡是出站IP 的TCP包 就扔了包
+iptable -A OUTPUT -p --tcp flags RST RST -d 1.1.1.1 -j DROP
+nmap的方式 
+nmap -sT 1.1.1.1 -p 1-100  只出现开放的端口
+nmap -sT 1.1.1.1 -p 80,21,22,8080
+nmap -sT 1.1.1.1 -p 80-2000
+默认还是1000个常用端口
+dmitry -p IP 功能简单 默认150个常用的端口
+dmitry -p IP -o output
+nc -nv -w 1 -z IP 1-100
+6.所有的TCP扫描方式,都是三次握手的变化来判断目标端口状态
+
+服务扫描
+识别开放的端口运行的应用
+识别目标操作系统
+提高攻击率
+Banner捕获
+	软件的开发商
+	软件名称
+	服务类型
+	版本号
+		直接发现已知的漏洞和弱点
+建立连接后直接获取banner
+另类服务识别方法
+	特征行为识别
+服务识别
+识别操作系统
+SNMP分析
+简单网络管理协议
+Community strings
+信息查询或者重新配置
+识别和绕过防火墙筛选
+防火墙识别
+	服务扫描banner
+nc -nv ip 22   可以直接显示出哪个服务和操作系统
+get /
+python socket
+import socket
+......python抓取
+dmitry -pd ip
+
+nmap -sT 1.1.1.目标 -P 22 --script=banner.nse
+专门发现服务指令端口的banner
+
+amap -B IP port
+
+amap -B IP 1-1000  | grep open
+可以识别特征库 指纹 特征来识别 -sV 来判断是什么操作服务/系统
+nmap 1.1.1.1 -p 80 -sV
+nmap 1.1.1.1 -p1-1000 -sV
+ AMAP 
+ amap 1.1.1.1 1-100 -q 也可以基于特征的方式去扫描 -q不会出现乱码  -b 可以显示更加准确
+ 	操作系统的识别技术
+种类繁多
+好产品多种技术
+TTL起始值的判断
+windows 128 (65-128)
+Linux/Unix 64 (1-64)
+某些 Unix 255
+
+nmap ip -O 判断操作系统
+xprobe2 1.1.1.1
+别动操作系统识别
+IDS 
+抓包分析
+被动扫描
+使用:直接
+p0f
+	结合ARP地址欺骗识别网络OS
+直接使用 p0f 开始就行 只要有网络从我这里经过就会抓包----部署在网络出口的地方就可以了 
+可以看发出的抓取的 os和发过来的信息的os 准确率一般
+
+SNMP 扫描 161 162端口 communities的发现
+snmp 协议监控 交换机 服务器 并发连接数 系统内部信息都可以进行监控 可以查看
+	经常被错误配置---配置容易忽略的地方---攻击点
+	信息的金矿
+	public/private/manager
+MIB Tree
+	SNMP Management Information Base (MIB)
+		树形的网络设备管理功能数据库---- 国际标准化的查询库  以数字代替 例如以下  
+		1.3.6.1.4.1.77.1.2.25
+		onesixfyone 1.1.1.1 public
+		结合字典文件 发起多个IP进行扫描
+		onesixtyone -c dict.txt(字典路径) -i hosts(某一个IP地址) -o my.log -w 100 
+查看更多信息SNMP目前有 v1 2c v3 三个版本
+smpwalk 192.168.61.163 -c public -v 2c 
+可以根据oid国际库来查看 
+smpwalk -c public -v 2c 192.168.61.163 1.3.6.1.4.1.77.1.2.XX  
+可以查出系统账号
+可以查询出 国际变准化的库编号 硬件架构  版本 操作系统时间  用户名 主机所属 MAC地址 IP地址 子网掩码 跟谁有通讯 盘符序列号 虚拟内存 物理内存 系统进程 系统目录 DLL信息 网络服务等 等等 
+可读性比snmpwalk 好
+smpcheck -t 192.168.61.163
+smpcheck -t 192.168.61.163 -c private -v 2 
+smpcheck -t 192.168.61.163 -w 是否有可以写的权限
+
+SMB扫描
+Server Message Block 协议
+	微软上历史上出现安全问题最多的协议
+	实现复杂
+	默认开放
+	文件共享
+	空会话身份认证访问(SMB)
+		密码策略
+		用户名
+		组名
+		机器名
+		用户 组SID
+nmap -v -p 139,445 192.168.60.1-20  {192.168.60.0/24 一个网段的也是可以的} 扫出来 139 445 端口 -v看详细的输出 -vv
+高级扫描扫一台机器的 nmap脚本 确定一个目标然后去扫  windows
+nmap 192.168.60.1 -p 139,445 --script=smb-os-discovery.nse
+检查smb已知的漏洞 容易把别人的主机扫死
+nmap -v -p 139,445 --script=smb-check-vulns --script-args=unsafe=1 1.1.1.1
+-r端口137 
+nbtscan -r 192.168.60.0/24
+不支持大范围扫 可以扫出来PID  用户名 域的环境 扫Linux
+enum4linux -a 192.168.60.10
+
+SMTP扫描 判断是否开启smtp端口
+nc -nv 1.1.1.1 25
+VRFY root
+nmap smtp.163.com(IP) -p25 --script=smtp-enum-users.nse --script-args=smtp-enum-users.methods=(VRFY)
+nmap smtp.163.com -p25 --script=smtp-open-relay.nse
+smtp-user-enum -M VRFY -U users.txt -t 1.1.1.1  可以使用 内置的字典
+./smtp.py
+
+防火墙扫描
+	通过发送的数据包,可能识别端口是否经过防护墙过滤
+	设备多样性,结果存在一定误差 
+	SYN  NO   Filtered
+	ACK  RST  Filtered
+nmap -p22 192.168.61.163  默认发送的是SYN包 
+nmap -p22 192.168.61.163 -sA 发送的是SYN+RST  自己去判断返回的状态是什么
+
+*****负载均衡的识别 
+	广域网的负载均衡 F5可以实现 
+	DNS的轮循
+HTTP-loadbalancing
+	Nginx Apache
+	组件级别的负载均衡  lvs 等实现服务器的负载均衡
+ldb 命令 + IP /或者 域名
+ldb www.baidu.com
+
+****WAF识别技术
+WEB应用防火墙
+wafw00f -l
+Profense
+.......
+wafw00f 域名
+nmap 域名/Ip --script=http-waf-detect.nse
+
+NMAP 我认为是最好的工具
+参数
+nmap 
+Target specification:发现目标
+nmap -iR (随机扫描) 100 -p22  --可以漫无目标的去扫
+
+host discovery: 主机发现
+-sL 不做扫面 列出  nmap -sL 192.168.1.0/24  子网掩码计算的功能
+-sn 不做端口扫描 Ping 
+-Pn 对方没有回包的时候进行端口扫
+-PS TCP /SYN TCP
+-PE ICMP 基本查不到
+-PO IP扫描
+-n 不做DNS的解析 -R做反向解析
+--dns-servers  指定一个DNS nmap --dns-servers 8.8.8.8 域名
+--system-dns 操作系统默认的DNS
+--traceroute  路由追踪  nmap 域名 --traceroute -p8080 可以精确到端口
+SCAN Technique :扫面技术 端口扫描
+-sS SYN扫面 /sT TCP扫面建立完成的三次握手   /sA 发一个ACK的包  /sW tcp的窗口扫描 /sM ACK + 
+-sU UDP 的扫描  nmap -sU -p80 192.168.1.1 准确率不高
+-sN SF (sx 诡异的组合 )
+--scanflags  可以自定义
+-sI 僵尸扫描
+-sY sZ SCTP 协议
+-sO IP扫描
+如何指定端口 
+-p 指定端口  nmap -p U:53 IP UDP的   nmap -p T:21 IP TCP的端口是都开放
+--exclude 
+-F 扫比较少数量的端口
+-r 连续扫描 1-65535 
+--top-prots   nmap IP --top-ports 10 只扫1000个里面的前10个端口
+SERVER /VERSION 扫出来判断什么服务和版本 
+-sV 特征库 
+--version-intensity 深入深度 0-9   使用 最详细的扫描>nmap 192.168.61.163 -p8080 -sV --version-intensity 9
+--version-light  metoo
+--version-all
+--version-trace  看过程
+Script Scan 脚本扫描
+--script-updatedb 更新脚本库 
+nmap --script-help=脚本   就会给出描述
+OS 操作系统的扫描
+-O 检测
+--osscan-limit  限制扫描windows还是 
+--osscan-guess  linux 系统
+......
+****Timeing 时间设定扫描
+s ms m h   秒 毫秒  分 小时
+--min-hostgroup /max-hostgroup   最大和最小扫描一个主机
+--host-timeout 超时时间 不响应就是超时
+--scan-delay  每次发送延迟多少时间
+--min-rate 2  每秒发包不小于多少
+--max-rate 2  每秒发包最大是多少
+--min-rate 最小速率  --max-rate 最大速率 
+firewall 防火墙
+-mtu 值 以太网传输多少   1400 .....
+-f 
+-D 伪造源地址  实例 nmap -D {伪造IP , 1,2,3,4} 等产生的地址  ---->发送包 到 目标主机IP
+-S 欺骗源地址  nmap -S 伪造源地址 -e eth0  目标地址    ---- 需要指定网卡
+-e
+-g 源端口的欺骗  nmap -g1000 目标地址   都是1000端口发出的包
+--proxies 代理链  代理服务器 发起扫描
+--data  十六进制的
+--data-string 
+--data-length 数据长度
+--ip-options IP 头
+--spoof-mac 欺骗MAC地址 
+--badsum 欺骗     checksum校验
+****OUTPUT 输出格式
+MISC  -6  扫描IPV6 
+
+****弱点扫描 漏洞扫描:
+		发现漏洞 基于扫描出来的结果版本
+		搜索已经公开的漏洞库
+		使用弱点扫描器实现漏洞管理
+		https://www.exploit-db.com/
+漏洞集成与上一个网站 在kali命令使用
+  
+searchsploit 工具
+searchsploit tomcat 的使用
+sandi 的使用 需要安装  apt-get install sandi
+Metasplits
+
+信息的维度定义漏洞管理
+信息收集:
+扫描发现 IP OS 服务 配置 漏洞 
+能力需求:定义扫描方式 内容和目标
+
+信息管理:
+格式化信息 赛选 定义 优先级
+资产分组 漏洞报告
+
+信息输出 告诉有漏洞的人
+
+弱点扫描类型:
+主动扫描:
+	有身份验证的
+	无身份验证的
+主动扫描:
+	镜像端口抓包
+	其他来源输入
+基于Agent的扫描:
+	支持平台有限
+
+	*********************************************
+****CVSS 通用漏洞评分系统:  0-10分
+Metric 时间 环境 基础 来度量
+****CVE 
+公开的漏洞加上编码
+公开的信息安全漏洞字典,统一的编号漏洞规则
+扫描器的大部分扫描项都对应一个CVE编号
+实现不同厂商之间信息交换的同一标准
+CVE 发布流程 发现--->CAN负责指定CVE ID -->发布
+
+厂商自己维护的 MS 为编号标准
+MS 
+MSKB 
+不同组织 不同编号  以CVE为标准
+
+OVAL 开放的漏洞描述语言
+CCE  配置规范缺陷标准化格式
+CPE  结构化规范
+CWE  漏洞的分类 字典 统一处理
+SCAP 比较宏观概念  集合了多种安全体系框架
+	六个元素 CVE OVAL CCE CPE CVSS XCCDF 
+----美国国家弱点库 完全按照这个标准
+NVD
+https://nvd.nist.gov/
+
+漏洞管理  三要素: 准确性 时间 资源
+
+Nmap 扫描脚本 400+
+cat /usr/share/nmap/script/script.db
+exploit 利用 
+vuln 弱点
+smb-vuln-ms10-061.nse 漏洞
+Stuxnet 蠕虫利用的4个漏洞之一 USA
+LANMAN API 
+XP Vista 2008 win7
+是否开了共享
+nmap -p445 --script=smb-enum-share.nse --script-args=smbuser=admin,smbpassword=pass 1.1.1.1
+ 
+ 	弱点扫描 OPENVAS 
+ 	openvas NESSUS项目的分支 免费开源
+ 	管理目标系统漏洞
+ 	免费开源 在kali里面没初始化和启动
+ 配置启动......
+ 安装
+ 创建证书
+ 同步弱点数据库
+ 创建客户端证书
+ 重建数据库
+ 备份数据库
+ 启动服务装入插件
+ 创建管理员账号
+ 创建普通用户账号
+ 配置侦听端口
+ 安装验证
+
+目前kali openvas-step
+
+NESSUS 家庭版免费
+	openvas的一个NESSUS的分支
+NEXPOSE 完整的漏洞管理工具
+3780端口
+
+缓冲区溢出
+
+
+
+
